@@ -1,0 +1,329 @@
+<!doctype html><html lang="uz"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Test generator</title>
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="theme-color" content="#1a6b4a"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#fff;--fg:#1a1a1a;--mut:#666;--bd:#ccc;--ac:#1a6b4a;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root{--bg:#181a1b;--fg:#eee;--mut:#aaa;--bd:#444;--ac:#4cc38a}}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 system-ui,sans-serif}
+.ui{max-width:900px;margin:0 auto;padding:16px}h1{font-size:20px;margin:0 0 4px}h2{font-size:16px;margin:18px 0 6px}.m{color:var(--mut);font-size:13px}
+textarea,input,select{width:100%;box-sizing:border-box;padding:8px;border:1px solid var(--bd);border-radius:8px;background:transparent;color:inherit;font:inherit}
+textarea{height:140px;font-family:monospace;font-size:13px}
+.r{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}.r>label{flex:1;min-width:150px;font-size:13px}
+button{padding:9px 14px;border:0;border-radius:8px;background:var(--ac);color:#fff;font:inherit;cursor:pointer;margin:2px}button.o{background:transparent;color:var(--ac);border:1px solid var(--ac)}
+table{border-collapse:collapse;width:100%;font-size:13px}td,th{border:1px solid var(--bd);padding:4px 6px;text-align:left}
+.w{overflow-x:auto}.keys{padding:0 16px;max-width:900px;margin:auto}
+.pg{background:#fff;color:#000;border:1px solid var(--bd);margin:14px auto;position:relative;width:210mm;height:297mm;overflow:hidden;box-sizing:border-box;font-family:'Times New Roman',serif}
+.tpg{font-family:var(--tf,'CMU Serif','Latin Modern Roman','Times New Roman',serif);padding:0}
+.tpg .hd{position:absolute;left:0;right:0;top:1.6mm;font:italic 10pt 'Times New Roman',serif;text-align:center;border:0;padding:0}
+.tpg .r1{position:absolute;left:10.6mm;right:9mm;top:6.3mm;border-top:.18mm solid #000}
+.tpg .r2{position:absolute;left:10.6mm;right:9mm;top:290.9mm;border-top:.18mm solid #000}
+.tpg .vr{position:absolute;left:105.8mm;top:6.3mm;height:279.8mm;border-left:.25mm solid #000}
+.tpg .cols{position:absolute;left:6.7mm;top:6.8mm;width:195mm;height:279mm;columns:2;column-gap:6mm;column-fill:auto;overflow:hidden;font-size:var(--ts,11pt);line-height:1.22;margin:0}
+.qi{break-inside:avoid;margin-bottom:4.7mm;padding-left:3.8mm;text-indent:-3.8mm}
+.ops{padding-left:0;text-indent:0;margin-left:3.8mm}.ops span{display:inline-block;margin-right:2.2mm}
+.bkn{font-weight:bold;text-align:center;margin:7mm 0 3.4mm;padding:0;text-indent:0;break-inside:avoid}
+.tpg .ft{position:absolute;left:0;right:0;bottom:auto;top:291.4mm;border:0;text-align:center;font:bold 10pt 'Times New Roman',serif;padding:0}
+.tbgi{position:absolute;top:0;left:0;right:0;bottom:0;background:var(--bgurl,none) center/cover;opacity:var(--bo,.15)}
+.a{position:absolute;box-sizing:border-box}.t{white-space:nowrap;line-height:1}
+.mk{position:absolute;background:#000;width:6mm;height:6mm}
+.bb{position:absolute;width:3.4mm;height:3.4mm;border:.25mm solid #ef7f9c;border-radius:50%;box-sizing:border-box;font:4.5pt/2.9mm 'Times New Roman',serif;text-align:center;color:#f4a6b9;overflow:hidden}
+.bf{background:#000;border-color:#000;color:#000}
+.x{width:210mm;background:#fff;color:#000}.x .pg{margin:0;border:0;height:296mm}.x td,.x th{border-color:#000}
+:root{--bad:#d11a2a;--badbg:#fff0f0;--okc:#1a6b4a}
+@media (prefers-color-scheme:dark){:root{--badbg:#3a1f1f;--bad:#ff7b7b}}
+.ui{max-width:1000px}
+nav{display:flex;gap:4px;flex-wrap:wrap;margin:10px 0;border-bottom:2px solid var(--bd);padding-bottom:6px}nav button{background:transparent;color:var(--fg);border:1px solid var(--bd)}nav button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.tab{display:none}.tab.on{display:block}
+#msg{display:none;position:sticky;top:0;z-index:5;padding:10px 12px;border-radius:8px;background:#e6f4ec;color:#0b4d2f;margin:6px 0;font-size:14px}#msg.on{display:block}#msg.bad{background:var(--badbg);color:var(--bad);border:1px solid var(--bad)}
+.card{border:2px solid var(--bd);border-radius:8px;padding:8px;margin:8px 0}.card.bad{border-color:var(--bad);background:var(--badbg)}.card.ok{border-color:#9fd3b6}
+.ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}.er div{color:var(--bad);font-size:13px;font-weight:600}.er .wn{color:#a06a00}
+.card textarea{height:auto;font-size:14px}.badc{color:var(--bad);font-weight:700}.okc{color:var(--okc);font-weight:700}
+#bl.only .card.ok{display:none}button.sm{padding:3px 8px;font-size:12px}
+#stb input{padding:3px 5px;border-radius:4px}tr.badr td{background:var(--badbg)}
+.hint{background:rgba(26,107,74,.08);border-radius:8px;padding:8px 10px;font-size:13px;margin:6px 0}.hint pre{margin:4px 0;font-size:12.5px;white-space:pre-wrap}
+.pcol{display:none}
+body:not(.show) .tests,body:not(.show) .sheets,body:not(.show) .keys{display:none}
+@media print{@page{size:A4;margin:0}.ui,.tests,.sheets,.keys,#RP{display:none!important}.pg{margin:0!important;border:0!important;page-break-after:always;height:296.5mm}
+body[data-p=T] .tests,body[data-p=S] .sheets{display:block!important}body[data-p=K] .keys{display:block!important;max-width:none;padding:0}body[data-p=R] #RP{display:block!important;padding:12mm}body{background:#fff;color:#000}table{font-size:11pt}td,th{border-color:#000!important}}
+#RP{display:none}.kp{padding:12mm;font-size:11pt}.kp h3{margin:0 0 4mm}.kp td,.kp th{border-color:#000;padding:2mm 2mm}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script></head><body>
+<div class="ui"><h1>Test generator va tekshirgich <small style="font-size:12px;color:var(--mut);font-weight:400">v5.1 (aniq PDF)</small></h1>
+<nav><button data-t="st" class="on" onclick="tab('st')">1. O'quvchilar</button><button data-t="q" onclick="tab('q')">2. Testlar</button><button data-t="gen" onclick="tab('gen')">3. Generator</button><button data-t="chk" onclick="tab('chk')">4. Tekshirish</button>
+<span style="flex:1"></span><button class="o" onclick="saveProj()" title="Loyihani faylga saqlash">💾 Loyiha</button><label class="o" style="padding:9px 14px;border:1px solid var(--ac);border-radius:8px;color:var(--ac);cursor:pointer;margin:2px;width:auto">📂 Ochish<input id="pj" type="file" accept=".json" hidden onchange="openProj(this.files[0])"></label></nav>
+<div id="msg"></div>
+
+<div class="tab on" id="tab-st"><h2>1. O'quvchilarni ro'yxatga olish</h2>
+<div class="m">Har bir o'quvchiga avtomatik noyob 4 xonali ID beriladi; titul varaqasi shu ID bilan chiqadi. Familiya, ism va (ixtiyoriy) otasining ismi kiritiladi.</div>
+<div class="r"><label>Excel / CSV fayldan yuklash (.xlsx)<input id="stf" type="file" accept=".xlsx,.csv,.txt" onchange="stFile(this.files[0])"></label><label>ID boshlanishi (4 xonali)<input id="d" type="number" min="1" max="9999" value="1001"></label></div>
+<div class="m">Excel: 1-ustun Familiya, 2-ustun Ism, 3-ustun Otasining ismi, 4-ustun Guruh (ixtiyoriy). Yoki "Ism Familiya" bitta ustunda.</div>
+<textarea id="stp" style="height:80px" placeholder="Yoki shu yerga yozing (har qatorda): Aliyev;Vali;Karimovich;9-A"></textarea>
+<div class="r"><button onclick="stPaste()">Matndan qo'shish</button><button class="o" onclick="newSt()">+ Bitta o'quvchi</button><button class="o" onclick="exSt()">Excelga yuklab olish</button><button class="o" onclick="clrSt()">Hammasini o'chirish</button></div>
+<div id="stn" class="m"></div><div class="w"><table><tr><th>ID</th><th>Familiya</th><th>Ism</th><th>Otasining ismi</th><th>Guruh</th><th></th></tr><tbody id="stb"></tbody></table></div></div>
+
+<div class="tab" id="tab-q"><h2>2. Testlarni joylash</h2>
+<div class="hint">Word (.docx) faylda har bir savol <b>#</b> belgisi bilan boshlanadi, to'g'ri javob oldiga <b>+</b> qo'yiladi:<pre>#Suvning formulasi qaysi?
++A) H2O
+B) CO2
+C) NaCl
+D) O2</pre>Dastur xatolarni <b style="color:var(--bad)">qizil</b> bilan belgilaydi. Siz to'g'rilaysiz (yoki "Avtomatik tuzatish"), keyin "Qabul qilish" bosiladi.</div>
+<div class="r"><label>Word fayl(lar)ni tanlang (.docx, .txt)<input id="bf" type="file" accept=".docx,.txt" multiple onchange="bFiles(this.files)"></label></div>
+<textarea id="bp" style="height:70px" placeholder="Yoki savollarni shu yerga qo'ying (Word'dan nusxalab)"></textarea>
+<div class="r"><button class="o" onclick="bPaste()">Matndan qo'shish</button><button onclick="fixAll()">🔧 Avtomatik tuzatish</button><button onclick="accept()">✅ Qabul qilish</button><button class="o" onclick="clrBl()">Qoralamani tozalash</button><label style="flex:0;white-space:nowrap;display:flex;align-items:center;gap:6px;min-width:0"><input id="ob" type="checkbox" style="width:auto" onchange="onlyBad()"> faqat xatolilar</label></div>
+<div id="qs" class="m" style="font-size:14px"></div><div id="bl"></div></div>
+
+<div class="tab" id="tab-gen"><h2>3. Generator</h2><div id="ginfo" class="m"></div>
+<div class="r"><label>Savollar soni (1–90)<input id="n" type="number" min="1" max="90" value="30"></label><label>Test nomi<input id="t" value="Kimyo testi"></label><label>Kitob raqami boshlanishi (7 xonali)<input id="b" type="number" min="1" max="9999999" value="1000001"></label><label>Guruh<select id="gsel"><option value="">Hammasi</option></select></label></div>
+<div class="r"><label>Shrift<select id="ff"><option value="'CMU Serif','Latin Modern Roman','Times New Roman',serif">CMU Serif (namuna kabi)</option><option value="'Times New Roman',serif">Times New Roman</option><option value="Arial,sans-serif">Arial</option><option value="Georgia,serif">Georgia</option><option value="Verdana,sans-serif">Verdana</option><option value="Tahoma,sans-serif">Tahoma</option><option value="'Courier New',monospace">Courier New</option></select></label>
+<label>Shrift o'lchami (pt)<input id="fs" type="number" min="7" max="16" step="0.5" value="11"></label><label>Orqa fon rasmi<input id="bg" type="file" accept="image/*"></label><label>Fon shaffofligi<input id="bo" type="range" min="5" max="60" value="15"></label></div>
+<div class="r"><button onclick="gen()">⚙ Generatsiya</button><button onclick="savePdfs()">📁 PDF'larni papkaga saqlash</button></div>
+<div class="r"><button class="o" onclick="prSec('T')">🖨 Testlar (PDF)</button><button class="o" onclick="prSec('S')">🖨 Titullar (PDF)</button><button class="o" onclick="prSec('K')">🖨 Kalitlar (PDF)</button><label style="flex:0;white-space:nowrap;display:flex;align-items:center;gap:6px;min-width:0"><input id="sh" type="checkbox" style="width:auto" onchange="togShow()"> ko'rib chiqish</label></div>
+<div class="m">"Papkaga saqlash" Chrome/Edge'da papka tanlatadi va testlar, titullar, kalitlar PDF'larini shu yerga yozadi. "🖨" tugmalarida chop etish oynasida <b>"PDF sifatida saqlash"</b> ni tanlang.</div></div>
+
+<div class="tab" id="tab-chk"><h2>4. Tekshirish</h2><div class="m">Titul scanner'da skanerlangan rasm (JPG/PNG) yoki scanner PDF'ini tanlang (4 ta qora kvadrat to'liq ko'rinsin). Kalitlar oxirgi generatsiyadan olinadi.</div>
+<div class="r"><input id="f" type="file" accept="image/*,.pdf" multiple></div><div class="r"><button onclick="chk()">Tekshirish</button><button class="o" onclick="exRes()">Natijalar Excel</button><button class="o" onclick="prRes()">Natijalar PDF</button></div><div id="res" style="margin-top:10px;overflow-x:auto"></div></div>
+</div>
+<div class="w tests" id="T"></div><div class="w sheets" id="S"></div><div class="keys" id="K"></div><div id="RP"></div>
+<script>
+const $=id=>document.getElementById(id),L='ABCD';
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const PK='#e0527a',RD='#d11a2a',BD='#ffd3da',
+MK=[[16.7,71.3],[193.5,71.3],[16.7,248.4],[193.5,248.4]],PX=[15.1,52.1,89.2],
+ap=(q,k)=>[PX[Math.floor(q/30)]+9+4.6*k,91.9+(q%30)*4.62],
+kp=(c,d)=>[129.5+4.7*c,101.1+4.62*(d?d-1:9)],ip=(c,d)=>[168+4.7*c,101.1+4.62*(d?d-1:9)];
+const IT=['nnwwn','wnnnw','nwnnw','wwnnn','nnwnw','wnwnn','nwwnn','nnnww','wnnwn','nwnwn'];
+function bars(code,x,y,h,m){const q=[1,1,1,1];for(let i=0;i<code.length;i+=2){const a=IT[code[i]],b=IT[code[i+1]];for(let j=0;j<5;j++)q.push(a[j]=='n'?1:3,b[j]=='n'?1:3)}q.push(3,1,1);
+let cx=x,s='';q.forEach((w,i)=>{if(i%2==0)s+=`<div class='a' style='left:${cx}mm;top:${y}mm;width:${w*m}mm;height:${h}mm;background:#000'></div>`;cx+=w*m});return s}
+// ---- Titul
+function sheet(s,N,book,ti){let h="<section class='pg sh'>";
+const A=(x,y,w,hh,st)=>`<div class='a' style='left:${x}mm;top:${y}mm;width:${w}mm;height:${hh}mm;${st||''}'></div>`,
+T=(x,y,t,st)=>`<div class='a t' style='left:${x}mm;top:${y}mm;${st||''}'>${t}</div>`,
+C=(x,y,t,st)=>T(x-50,y,t,'width:100mm;text-align:center;'+(st||'')),
+B=(x,y,t,f)=>`<span class='bb${f?' bf':''}' style='left:${x-1.7}mm;top:${y-1.7}mm'>${t}</span>`,
+HL=(x1,x2,y,c)=>A(x1,y,x2-x1,0,`border-top:.35mm solid ${c||RD}`),VL=(x,y1,y2,c)=>A(x,y1,0,y2-y1,`border-left:.35mm solid ${c||RD}`),
+pk=`color:${PK};font-weight:bold;`,id=String(s.id).padStart(4,'0');
+MK.forEach(([x,y])=>h+=`<i class='mk' style='left:${x-3}mm;top:${y-3}mm'></i>`);
+h+=A(10,10,190,270,`border:.5mm solid ${RD}`)+C(105,12.5,'JAVOBLAR VARAQASI',pk+'font-size:15pt')+C(105,20.5,id,'font-size:13pt')+T(13,13,esc(ti||''),pk+'font-size:6pt')
++HL(10,200,27.6)+HL(10,200,76.6)+VL(105,27.6,76.6)+HL(10,105,62)
++C(57.5,31,'ABITURIYENTLAR DIQQATIGA!',pk+'font-size:6pt')
++T(13,38,'1) SHARIKLI HAVORANG PASTALI RUCHKADAN FOYDALANING',pk+'font-size:5.2pt')
++T(13,45,"2) HAR BIR TEST TOPSHIRIG'IDAGI JAVOBLARDAN FAQAT BITTASINI BELGILANG",pk+'font-size:5.2pt')
++C(57.5,64.6,"DOIRACHANI BO'YASH NAMUNASI",pk+'font-size:6.5pt')+C(24.1,68.2,"To'g'ri",pk+'font-size:5.5pt')+C(77.4,68.2,"Noto'g'ri",pk+'font-size:5.5pt')
++B(24.1,73.9,'',1)+B(63.1,73.9,'/')+B(70.3,73.9,'x')+B(77.4,73.9,'.')+B(84.5,73.9,'o')+B(91.7,73.9,'v')
++bars(id,135,39,17,1);
+for(let p=0;p<Math.ceil(N/30);p++){const x0=PX[p],R=Math.min(30,N-p*30);
+h+=A(x0,79.3,32,151.3,`border:.3mm solid ${RD}`)+C(x0+16,82,'Kalitlar',pk+'font-size:7pt')+HL(x0,x0+32,88.1)+A(x0+6.6,89.6,19.5,R*4.62,`background:${BD}`);
+for(let r=0;r<R;r++){const q=p*30+r,y=91.9+r*4.62;h+=C(x0+3.2,y-1.1,q+1,'font-size:5.5pt;color:'+PK);for(let k=0;k<4;k++){const[x,yy]=ap(q,k);h+=B(x,yy,L[k])}}}
+h+=A(125.9,79.3,35.4,67,`border:.3mm solid ${RD}`)+C(143.6,82,'Kitob raqami',pk+'font-size:7pt')+HL(125.9,161.3,88.1)+HL(125.9,161.3,96.9);
+for(let c=1;c<7;c++)h+=VL(127.15+c*4.7,88.1,96.9);
+for(let c=0;c<7;c++)for(let d=1;d<=10;d++){const dd=d%10,[x,y]=kp(c,dd);h+=B(x,y,dd,book&&String(book)[c]==dd)}
+h+=A(164.5,79.3,21.1,67,`border:.3mm solid ${RD}`)+C(175,82,'ID raqam',pk+'font-size:7pt')+HL(164.5,185.6,88.1)+HL(164.5,185.6,96.9);
+for(let c=1;c<4;c++)h+=VL(165.65+c*4.7,88.1,96.9);
+for(let c=0;c<4;c++){h+=C(168+4.7*c,90.2,id[c],'font-size:7pt;font-weight:bold;color:#000');for(let d=1;d<=10;d++){const dd=d%10,[x,y]=ip(c,dd);h+=B(x,y,dd,id[c]==dd)}}
+const nm=(y,t,lb)=>C(162,y,esc(t.toUpperCase()),pk+'font-size:10pt')+HL(129.5,194.5,y+3.6,PK)+C(162,y+5,lb,pk+'font-size:6pt');
+h+=HL(121.7,200,152.5)+HL(121.7,200,163)+C(160.8,156,"ABITURIYENT TOMONIDAN TO'LDIRILADI!",pk+'font-size:6.5pt')+nm(176.5,s.fam,'Familiyasi')+nm(194.5,s.ism,'Ismi')+nm(212,s.ota,'Otasining ismi')
++A(10,232.5,190,6.9,'background:#f4a6b9;border-top:.35mm solid '+RD+';border-bottom:.35mm solid '+RD)+C(105,234.7,"Diqqat! Quyidagi dalolatnoma guruh nazoratchilari tomonidan rasmiylashtiriladi!",'color:#fff;font-weight:bold;font-size:6.5pt')
++C(105,243,'TEST SINOVIDAN CHETLASHTIRISH DALOLATNOMASI',pk+'font-size:7pt')+HL(26,185,254,PK)+C(105,256,'(Chetlashtirish vaqti va sababi)',pk+'font-size:6pt');
+for(let i=0;i<2;i++){const y=266+i*7;h+=T(14,y-3,(i+1)+')','font-size:7pt;color:'+PK)+HL(20,160,y,PK)+C(90,y+1,'Guruh nazoratchisining familiyasi, ismi, otasining ismi',pk+'font-size:5.5pt')+HL(168,194,y,PK)+C(181,y+1,'Imzo',pk+'font-size:5.5pt')}
+return h+'</section>'}
+// ---- Test kitobi
+function buildTest(book,qs){const host=$('T');let cols,pn=0;
+const np=()=>{pn++;const pg=document.createElement('section');pg.className='pg tpg';pg.innerHTML=`<div class="tbgi"></div><div class="hd">Savollar kitobi (${book})</div><i class="r1"></i><i class="r2"></i><i class="vr"></i><div class="cols">${pn==1?`<div class="bkn">${book}</div>`:''}</div><div class="ft">- ${pn} -</div>`;host.appendChild(pg);cols=pg.querySelector('.cols')};
+np();qs.forEach((x,j)=>{const d=document.createElement('div');d.className='qi';d.innerHTML=`${j+1}. ${esc(x.q)}<div class="ops">`+x.o.map((o,k)=>`<span>${L[k]}) ${esc(o)}</span>`).join(' ')+'</div>';cols.appendChild(d);
+if(cols.scrollWidth>cols.clientWidth+2&&cols.children.length>1){cols.removeChild(d);np();cols.appendChild(d)}})}
+// ---- OMR
+async function loadImg(f){const im=await createImageBitmap(f),w=im.width,h=im.height,sc=Math.min(1,2000/Math.max(w,h)),c=document.createElement('canvas'),x=c.getContext('2d');
+if(w>h){c.width=Math.round(h*sc);c.height=Math.round(w*sc);x.translate(c.width,0);x.rotate(Math.PI/2);x.drawImage(im,0,0,w*sc,h*sc)}else{c.width=Math.round(w*sc);c.height=Math.round(h*sc);x.drawImage(im,0,0,c.width,c.height)}return c}
+function bin(c){const W=c.width,H=c.height,d=c.getContext('2d').getImageData(0,0,W,H).data,g=new Float32Array(W*H),W1=W+1,I=new Float64Array(W1*(H+1)),b=new Uint8Array(W*H),r=Math.round(W*.03);
+for(let i=0;i<W*H;i++)g[i]=.299*d[4*i]+.587*d[4*i+1]+.114*d[4*i+2];
+for(let y=0;y<H;y++){let s=0;for(let x=0;x<W;x++){s+=g[y*W+x];I[(y+1)*W1+x+1]=I[y*W1+x+1]+s}}
+for(let y=0;y<H;y++){const y0=Math.max(0,y-r),y1=Math.min(H,y+r+1);for(let x=0;x<W;x++){const x0=Math.max(0,x-r),x1=Math.min(W,x+r+1),m=(I[y1*W1+x1]-I[y0*W1+x1]-I[y1*W1+x0]+I[y0*W1+x0])/((y1-y0)*(x1-x0)),v=g[y*W+x];b[y*W+x]=v<m*.75&&v<150?1:0}}
+return{W,H,b}}
+function marks({W,H,b}){const seen=new Uint8Array(W*H),side=W*6/210,c=[],st=[];
+for(let i=0;i<W*H;i++){if(!b[i]||seen[i])continue;let x0=W,x1=0,y0=H,y1=0,n=0;st.push(i);seen[i]=1;
+while(st.length){const p=st.pop(),x=p%W,y=(p-x)/W;n++;if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;
+const nb=[];if(x>0)nb.push(p-1);if(x<W-1)nb.push(p+1);if(y>0)nb.push(p-W);if(y<H-1)nb.push(p+W);
+for(const q of nb)if(b[q]&&!seen[q]){seen[q]=1;st.push(q)}}
+const w=x1-x0+1,h=y1-y0+1;if(w>.75*side&&w<1.5*side&&h>.75*side&&h<1.5*side&&Math.abs(w-h)<.3*Math.max(w,h)&&n>.85*w*h)c.push([(x0+x1)/2,(y0+y1)/2])}
+if(c.length<4)return null;
+const P=[[0,0],[W,0],[0,H],[W,H]].map(([a,e])=>c.reduce((m,q)=>(q[0]-a)**2+(q[1]-e)**2<(m[0]-a)**2+(m[1]-e)**2?q:m));
+return new Set(P.map(String)).size==4?P:null}
+function homog(P,Q){const A=[];for(let i=0;i<4;i++){const[u,v]=P[i],[x,y]=Q[i];A.push([u,v,1,0,0,0,-u*x,-v*x,x],[0,0,0,u,v,1,-u*y,-v*y,y])}
+for(let i=0;i<8;i++){let m=i;for(let r=i+1;r<8;r++)if(Math.abs(A[r][i])>Math.abs(A[m][i]))m=r;[A[i],A[m]]=[A[m],A[i]];for(let r=0;r<8;r++)if(r!==i){const f=A[r][i]/A[i][i];for(let c=i;c<9;c++)A[r][c]-=f*A[i][c]}}
+return A.map((r,i)=>r[8]/r[i])}
+const mp=(h,u,v)=>{const w=h[6]*u+h[7]*v+1;return[(h[0]*u+h[1]*v+h[2])/w,(h[3]*u+h[4]*v+h[5])/w]};
+function fv(B,h,u,v){let n=0,k=0;for(let a=-2;a<=2;a++)for(let c=-2;c<=2;c++){if(a*a+c*c>4)continue;const[x,y]=mp(h,u+a*.5,v+c*.5),xi=Math.round(x),yi=Math.round(y);k++;if(xi>=0&&yi>=0&&xi<B.W&&yi<B.H&&B.b[yi*B.W+xi])n++}return n/k}
+function pk(v,lb){const m=Math.max(...v);if(m<.35)return'-';return v.filter(x=>x>Math.max(.35,.6*m)).length>1?'*':lb[v.indexOf(m)]}
+// ================= Umumiy =================
+let S={students:[],blocks:[],bank:[],K:null,cfg:{}},LAST=[];
+function msg(t,bad){const m=$('msg');m.textContent=t;m.className='on'+(bad?' bad':'');clearTimeout(msg.t);msg.t=setTimeout(()=>m.className='',bad?9000:5000)}
+function cfgGet(){return{n:$('n').value,t:$('t').value,b:$('b').value,ff:$('ff').selectedIndex,fs:$('fs').value,bo:$('bo').value,d:$('d').value}}
+function cfgSet(c){if(!c)return;for(const k of['n','t','b','fs','bo','d'])if(c[k]!=null)$(k).value=c[k];if(c.ff!=null)$('ff').selectedIndex=c.ff}
+let pt;function persist(){clearTimeout(pt);pt=setTimeout(()=>{try{localStorage.setItem('tg5',JSON.stringify({students:S.students,blocks:S.blocks,bank:S.bank,K:S.K,cfg:cfgGet()}))}catch(e){msg("Brauzer xotirasi to'ldi. Loyihani faylga saqlang (💾).",1)}},250)}
+function dl(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},3000)}
+function tab(n){document.querySelectorAll('.tab').forEach(e=>e.classList.toggle('on',e.id=='tab-'+n));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t==n));if(n=='gen')info()}
+function dec(s){return s.replace(/&#x([0-9a-f]+);/gi,(m,h)=>String.fromCodePoint(parseInt(h,16))).replace(/&#(\d+);/g,(m,d)=>String.fromCodePoint(+d)).replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&apos;/g,"'").replace(/&amp;/g,'&')}
+const xe=s=>String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+// ================= ZIP o'qish/yozish (Word va Excel uchun, kutubxonasiz) =================
+async function readZip(buf){const u=new Uint8Array(buf),dv=new DataView(buf);let e=u.length-22;while(e>=0&&dv.getUint32(e,true)!==0x06054b50)e--;if(e<0)throw new Error('zip emas');
+const n=dv.getUint16(e+10,true);let p=dv.getUint32(e+16,true);const ents={};
+for(let i=0;i<n;i++){if(dv.getUint32(p,true)!==0x02014b50)break;const m=dv.getUint16(p+10,true),cs=dv.getUint32(p+20,true),nl=dv.getUint16(p+28,true),el=dv.getUint16(p+30,true),cl=dv.getUint16(p+32,true),lo=dv.getUint32(p+42,true),name=new TextDecoder().decode(u.subarray(p+46,p+46+nl));ents[name]={m,cs,lo};p+=46+nl+el+cl}
+return{names:Object.keys(ents),async get(name){const x=ents[name];if(!x)return null;const ln=dv.getUint16(x.lo+26,true),le=dv.getUint16(x.lo+28,true),s=x.lo+30+ln+le,d=u.subarray(s,s+x.cs);
+if(x.m===0)return new TextDecoder().decode(d);const ds=new DecompressionStream('deflate-raw'),w=ds.writable.getWriter();w.write(d);w.close();return new TextDecoder().decode(await new Response(ds.readable).arrayBuffer())}}}
+const CT=(()=>{const t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function crc32(u){let c=0xFFFFFFFF;for(let i=0;i<u.length;i++)c=CT[(c^u[i])&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0}
+function makeZip(files,type){const enc=new TextEncoder(),parts=[],cd=[];let off=0;
+for(const[name,str]of Object.entries(files)){const nb=enc.encode(name),d=enc.encode(str),c=crc32(d);
+const h=new DataView(new ArrayBuffer(30));h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x800,true);h.setUint16(12,0x21,true);h.setUint32(14,c,true);h.setUint32(18,d.length,true);h.setUint32(22,d.length,true);h.setUint16(26,nb.length,true);
+parts.push(new Uint8Array(h.buffer),nb,d);
+const k=new DataView(new ArrayBuffer(46));k.setUint32(0,0x02014b50,true);k.setUint16(4,20,true);k.setUint16(6,20,true);k.setUint16(8,0x800,true);k.setUint16(14,0x21,true);k.setUint32(16,c,true);k.setUint32(20,d.length,true);k.setUint32(24,d.length,true);k.setUint16(28,nb.length,true);k.setUint32(42,off,true);
+cd.push(new Uint8Array(k.buffer),nb);off+=30+nb.length+d.length}
+const sz=cd.reduce((a,x)=>a+x.length,0),e=new DataView(new ArrayBuffer(22)),cnt=Object.keys(files).length;
+e.setUint32(0,0x06054b50,true);e.setUint16(8,cnt,true);e.setUint16(10,cnt,true);e.setUint32(12,sz,true);e.setUint32(16,off,true);
+return new Blob([...parts,...cd,new Uint8Array(e.buffer)],{type:type||'application/zip'})}
+// ---- Excel (.xlsx) yozish
+function xlsxBlob(rows){const col=i=>{let s='';i++;while(i>0){const m=(i-1)%26;s=String.fromCharCode(65+m)+s;i=(i-m-1)/26}return s};
+const w=[];rows.forEach(r=>r.forEach((v,i)=>{w[i]=Math.max(w[i]||8,Math.min(60,String(v==null?'':v).length+3))}));
+const sd=rows.map((r,ri)=>`<row r="${ri+1}">`+r.map((v,ci)=>{const ref=col(ci)+(ri+1);if(typeof v==='number'&&isFinite(v))return`<c r="${ref}"><v>${v}</v></c>`;return`<c r="${ref}" t="inlineStr"${ri==0?' s="1"':''}><is><t xml:space="preserve">${xe(v)}</t></is></c>`}).join('')+'</row>').join('');
+const X='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+return makeZip({'[Content_Types].xml':X+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>',
+'_rels/.rels':X+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>',
+'xl/workbook.xml':X+'<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Sheet1" sheetId="1" r:id="rId1"/></sheets></workbook>',
+'xl/_rels/workbook.xml.rels':X+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>',
+'xl/styles.xml':X+'<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/></cellXfs></styleSheet>',
+'xl/worksheets/sheet1.xml':X+'<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><cols>'+w.map((x,i)=>`<col min="${i+1}" max="${i+1}" width="${x}" customWidth="1"/>`).join('')+'</cols><sheetData>'+sd+'</sheetData></worksheet>'},'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')}
+function xlsave(rows,name){dl(xlsxBlob(rows),name)}
+// ---- Excel (.xlsx) o'qish
+async function xlsxRows(file){const z=await readZip(await file.arrayBuffer()),ss=await z.get('xl/sharedStrings.xml');
+const sst=ss?(ss.match(/<si>[\s\S]*?<\/si>|<si\/>/g)||[]).map(s=>dec((s.match(/<t[^>]*>[\s\S]*?<\/t>/g)||[]).map(t=>t.replace(/<[^>]+>/g,'')).join(''))):[];
+const sn=z.names.filter(n=>/^xl\/worksheets\/sheet\d+\.xml$/.test(n)).sort((a,b)=>parseInt(a.match(/\d+/)[0])-parseInt(b.match(/\d+/)[0]))[0];if(!sn)throw new Error('varaq topilmadi');
+const xml=await z.get(sn),rows=[];
+for(const rm of xml.match(/<row[ >][\s\S]*?<\/row>/g)||[]){const row=[];
+rm.replace(/<c ([^>]*?)(?:\/>|>([\s\S]*?)<\/c>)/g,(m,at,inner)=>{const r=(at.match(/\br="([A-Z]+)\d+"/)||[])[1],t=(at.match(/\bt="(\w+)"/)||[])[1];if(!r)return;let ci=0;for(const ch of r)ci=ci*26+ch.charCodeAt(0)-64;ci--;
+let v='';if(inner){if(t=='s')v=sst[+((inner.match(/<v>([\s\S]*?)<\/v>/)||[])[1])]||'';else if(t=='inlineStr')v=dec((inner.match(/<t[^>]*>([\s\S]*?)<\/t>/)||[])[1]||'');else v=dec((inner.match(/<v>([\s\S]*?)<\/v>/)||[])[1]||'')}row[ci]=v});
+rows.push(Array.from(row,x=>x==null?'':x))}
+return rows}
+// ---- Word (.docx) o'qish
+const SUB={'0':'₀','1':'₁','2':'₂','3':'₃','4':'₄','5':'₅','6':'₆','7':'₇','8':'₈','9':'₉','+':'₊','-':'₋','=':'₌','(':'₍',')':'₎','n':'ₙ','x':'ₓ'},SUP={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','+':'⁺','-':'⁻','=':'⁼','(':'⁽',')':'⁾','n':'ⁿ'};
+async function docxText(file){const z=await readZip(await file.arrayBuffer()),x=await z.get('word/document.xml');if(!x)throw new Error("Bu .docx fayl emas");
+return(x.match(/<w:p[ >][\s\S]*?<\/w:p>/g)||[]).map(p=>{let out='';for(const r of p.match(/<w:r[ >][\s\S]*?<\/w:r>/g)||[]){const va=(r.match(/<w:vertAlign w:val="(\w+)"/)||[])[1];let t='';
+r.replace(/<w:t(?:\s[^>]*)?>([\s\S]*?)<\/w:t>|<w:tab\/>|<w:br[^>]*\/>|<w:noBreakHyphen\/>/g,(m,g)=>{t+=g!==undefined?g:(m=='<w:tab/>'?' ':m.startsWith('<w:noB')?'-':'\n')});t=dec(t);
+if(va=='subscript')t=[...t].map(c=>SUB[c]||c).join('');else if(va=='superscript')t=[...t].map(c=>SUP[c]||c).join('');out+=t}return out}).join('\n')}
+// ================= 1. O'quvchilar =================
+function nextId(){const st=Math.max(1,Math.round(+$('d').value)||1001),m=S.students.reduce((a,s)=>Math.max(a,+s.id||0),st-1);return String(m+1).padStart(4,'0')}
+function addSt(fam,ism,ota,gr){if(!(fam||ism))return false;const id=nextId();if(+id>9999){msg("ID 9999 dan oshib ketdi (4 xonali).",1);return false}S.students.push({id,fam:fam||'',ism:ism||'',ota:ota||'',gr:gr||''});return true}
+function rSt(){$('stb').innerHTML=S.students.map((s,i)=>`<tr><td><b>${s.id}</b></td><td><input value="${esc(s.fam)}" oninput="uS(${i},'fam',this.value)"></td><td><input value="${esc(s.ism)}" oninput="uS(${i},'ism',this.value)"></td><td><input value="${esc(s.ota)}" oninput="uS(${i},'ota',this.value)"></td><td><input value="${esc(s.gr)}" oninput="uS(${i},'gr',this.value)"></td><td><button class="o sm" onclick="dS(${i})">✕</button></td></tr>`).join('');$('stn').textContent=S.students.length+" ta o'quvchi";fillGr()}
+function uS(i,k,v){S.students[i][k]=v;persist()}
+function dS(i){const s=S.students[i];if(confirm(`${s.fam} ${s.ism} o'chirilsinmi?`)){S.students.splice(i,1);rSt();persist()}}
+function clrSt(){if(S.students.length&&confirm("Hamma o'quvchilar o'chirilsinmi?")){S.students=[];rSt();persist()}}
+function newSt(){S.students.push({id:nextId(),fam:'',ism:'',ota:'',gr:''});rSt();persist();const i=document.querySelectorAll('#stb tr:last-child input')[0];if(i)i.focus()}
+function rowsToSt(rows){let n=0;rows.forEach((r,ri)=>{let c=r.map(x=>String(x==null?'':x).trim());if(c.length>2&&/^\d+$/.test(c[0])&&c[1])c=c.slice(1);if(!c.some(Boolean))return;
+if(ri==0&&/^(familiya|familiyasi|f\.?\s?i|ism|t\/r|№|id\b|ro'yxat)/i.test(c[0]))return;
+if(c.filter(Boolean).length==1&&/\s/.test(c[0])){const p=c[0].split(/\s+/);c=[p[0],p[1],p.slice(2).join(' ')]}
+if(addSt(c[0],c[1],c[2],c[3]))n++});rSt();persist();return n}
+function stPaste(){const n=rowsToSt($('stp').value.split('\n').map(l=>l.split(/[;\t,]/)));$('stp').value='';msg(n+" ta o'quvchi qo'shildi.")}
+async function stFile(f){if(!f)return;try{let rows;if(/\.xlsx$/i.test(f.name))rows=await xlsxRows(f);else if(/\.(csv|txt)$/i.test(f.name))rows=(await f.text()).split(/\r?\n/).map(l=>l.split(/[;\t,]/));else{msg("Faqat .xlsx, .csv yoki .txt fayl. Eski .xls bo'lsa, Excelda 'Saqlash'→.xlsx qiling.",1);return}
+msg(rowsToSt(rows)+" ta o'quvchi yuklandi.")}catch(e){msg("Faylni o'qib bo'lmadi: "+e.message,1)}$('stf').value=''}
+function exSt(){if(!S.students.length){msg("Ro'yxat bo'sh.",1);return}xlsave([['ID','Familiya','Ism','Otasining ismi','Guruh'],...S.students.map(s=>[s.id,s.fam,s.ism,s.ota,s.gr])],'oquvchilar.xlsx')}
+function fillGr(){const g=[...new Set(S.students.map(s=>s.gr).filter(Boolean))],sel=$('gsel'),v=sel.value;sel.innerHTML='<option value="">Hammasi</option>'+g.map(x=>`<option>${esc(x)}</option>`).join('');sel.value=g.includes(v)?v:''}
+// ================= 2. Testlar (Word → tekshirish → qabul) =================
+const OR=/^\s*(\+)?\s*([A-Da-dАВСДавсд])\s*[\)\.]\s*(.*)$/,CY={'А':'A','В':'B','С':'C','Д':'D','а':'A','в':'B','с':'C','д':'D'};
+function splitBlocks(t){const out=[];let cur=null;for(const ln of t.replace(/\r/g,'').split('\n')){if(/^\s*#/.test(ln)){cur=[ln];out.push(cur)}else if(cur)cur.push(ln);else if(ln.trim()){cur=[ln];out.push(cur)}}return out.map(b=>b.join('\n').trim()).filter(Boolean)}
+function vBlock(raw){const errs=[],warns=[],q=[],op=[];let first=true;
+for(const ln of raw.replace(/\r/g,'').split('\n')){let t=ln.trim();if(!t)continue;
+if(first){first=false;if(!/^#/.test(t))errs.push("Savol '#' belgisi bilan boshlanmagan.");t=t.replace(/^#\s*/,'').replace(/^\d+\s*[\)\.]\s+/,'')}
+const m=t.match(OR);if(m){op.push({L:(CY[m[2]]||m[2]).toUpperCase(),p:!!m[1],t:m[3].trim()})}else if(op.length)op[op.length-1].t=(op[op.length-1].t+' '+t).trim();else if(t)q.push(t)}
+const qt=q.join(' ').replace(/\s+/g,' ').trim();if(!qt)errs.push("Savol matni yo'q.");
+const cnt={};op.forEach(o=>cnt[o.L]=(cnt[o.L]||0)+1);
+for(const l of L){if(!cnt[l])errs.push(`${l}) varianti yo'q.`);else if(cnt[l]>1)errs.push(`${l}) varianti ${cnt[l]} marta yozilgan.`)}
+if(op.length>4)errs.push("Variantlar 4 tadan ko'p.");
+if(L.split('').every(l=>cnt[l]==1)&&op.length==4&&op.map(o=>o.L).join('')!=='ABCD')errs.push("Variantlar tartibi A, B, C, D bo'lishi kerak (\"Avtomatik tuzatish\" tuzatadi).");
+op.forEach(o=>{if(!o.t)errs.push(`${o.L}) varianti bo'sh.`)});
+const pl=op.filter(o=>o.p).length;if(pl==0)errs.push("To'g'ri javob belgilanmagan (variant oldiga + qo'ying, masalan +A) ).");else if(pl>1)errs.push("Bir nechta variant to'g'ri deb belgilangan.");
+if(new Set(op.map(o=>o.t.toLowerCase())).size<op.length&&op.length==4)warns.push("Ba'zi variantlar bir xil matnli.");
+const res={errs,warns,q:qt};
+if(L.split('').every(l=>cnt[l]==1)&&op.length==4&&qt){const s=[...op].sort((a,b)=>a.L<b.L?-1:1);res.canon='#'+qt+'\n'+s.map(o=>(o.p?'+':'')+o.L+') '+o.t).join('\n');if(!errs.length){res.o=s.map(o=>o.t);res.a=s.findIndex(o=>o.p)}}
+return res}
+function stat(i){const v=vBlock(S.blocks[i]),c=$('c'+i);if(c){c.className='card '+(v.errs.length?'bad':'ok');$('e'+i).innerHTML=v.errs.map(e=>'<div>⚠ '+esc(e)+'</div>').join('')+v.warns.map(e=>'<div class="wn">ℹ '+esc(e)+'</div>').join('')}return v}
+function recount(){let bad=0,ok=0;S.blocks.forEach((_,i)=>{vBlock(S.blocks[i]).errs.length?bad++:ok++});
+$('qs').innerHTML=`<b>${S.blocks.length}</b> ta blok: <span class="okc">${ok} ta to'g'ri</span>, <span class="${bad?'badc':'okc'}">${bad} ta xatoli</span>.`+(S.bank.length?` Qabul qilingan baza: <b>${S.bank.length}</b> ta savol.`:'')}
+function rBl(){$('bl').innerHTML=S.blocks.map((b,i)=>`<div class="card" id="c${i}"><div class="ch"><b>${i+1}-savol</b><button class="o sm" onclick="dB(${i})">O'chirish</button></div><textarea id="t${i}" rows="${Math.min(9,b.split('\n').length+1)}" spellcheck="false" oninput="eB(${i},this.value)">${esc(b)}</textarea><div class="er" id="e${i}"></div></div>`).join('');S.blocks.forEach((_,i)=>stat(i));recount();info()}
+let rt;function eB(i,v){S.blocks[i]=v;stat(i);clearTimeout(rt);rt=setTimeout(recount,300);persist()}
+function dB(i){S.blocks.splice(i,1);rBl();persist()}
+function addText(t){const b=splitBlocks(t);S.blocks.push(...b);rBl();persist();return b.length}
+function bPaste(){const n=addText($('bp').value);$('bp').value='';msg(n+" ta blok qo'shildi.")}
+async function bFiles(fl){let n=0;for(const f of fl){try{let t;if(/\.docx$/i.test(f.name))t=await docxText(f);else if(/\.(txt|md)$/i.test(f.name))t=await f.text();else{msg(`${f.name}: faqat .docx yoki .txt. Eski .doc bo'lsa, Wordda 'Saqlash'→.docx qiling.`,1);continue}n+=addText(t)}catch(e){msg(`${f.name}: o'qib bo'lmadi (${e.message})`,1)}}
+$('bf').value='';if(n){const bad=S.blocks.filter(b=>vBlock(b).errs.length).length;msg(`${n} ta savol yuklandi. `+(bad?`${bad} ta xatoli, qizil bilan belgilandi.`:"Xato topilmadi."),!!bad)}}
+function fixAll(){let n=0;S.blocks=S.blocks.map(b=>{const v=vBlock(b);if(v.canon&&v.canon!==b){n++;return v.canon}return b});rBl();persist();msg(n+" ta savol avtomatik tuzatildi (variant harflari, tartib, bo'sh joylar).")}
+function onlyBad(){$('bl').classList.toggle('only',$('ob').checked)}
+function accept(){const bank=[],seen=new Set();let bad=0,dup=0;S.blocks.forEach(b=>{const v=vBlock(b);if(v.errs.length){bad++;return}const k=v.q.toLowerCase();if(seen.has(k)){dup++;return}seen.add(k);bank.push({q:v.q,o:v.o,a:v.a})});
+if(!bank.length){msg("Qabul qilish uchun to'g'ri savol yo'q.",1);return}
+if(bad&&!confirm(`${bad} ta xatoli savol bor. Faqat to'g'ri ${bank.length} tasini qabul qilamizmi?`))return;
+S.bank=bank;persist();recount();info();msg(`${bank.length} ta savol qabul qilindi`+(dup?` (${dup} ta takroriy o'tkazib yuborildi)`:'')+". Endi 3-bo'limga (Generator) o'ting.")}
+function clrBl(){if(S.blocks.length&&confirm("Hamma savollar (qoralama) o'chirilsinmi? Qabul qilingan baza saqlanadi.")){S.blocks=[];rBl();persist()}}
+// ================= 3. Generator =================
+function info(){const m=S.students.length,b=S.bank.length;$('ginfo').innerHTML=`O'quvchilar: <b>${m}</b> · Qabul qilingan savollar: <b>${b}</b>`+(S.K?` · Oxirgi generatsiya: <b>${Object.keys(S.K.st).length}</b> ta o'quvchi, ${S.K.n} savol`:'')}
+function gen(){const N=Math.max(1,Math.min(90,Math.round(+$('n').value)||30)),Ti=$('t').value,rs=document.documentElement.style,gr=$('gsel').value;
+let list=S.students.filter(s=>!gr||s.gr==gr);
+if(!list.length){msg("Avval 1-bo'limda o'quvchilarni kiriting.",1);return}
+if(S.bank.length<N){msg(`Qabul qilingan bazada ${S.bank.length} ta savol bor, ${N} ta kerak. 2-bo'limda savollarni qabul qiling.`,1);return}
+const BK0=Math.round(+$('b').value)||1000001;if(BK0+list.length-1>9999999){msg("Kitob raqami 7 xonadan oshib ketadi.",1);return}
+if(S.K&&!confirm("Oldingi generatsiya kalitlari almashtiriladi. Eski titullarni tekshirib bo'lmay qoladi. Davom etamizmi?"))return;
+rs.setProperty('--tf',$('ff').value);rs.setProperty('--ts',($('fs').value||11)+'pt');rs.setProperty('--bo',$('bo').value/100);
+$('T').innerHTML='';const K={n:N,title:Ti,books:{},st:{}};let s='';const kr=[];
+list.forEach((p,i)=>{const book=String(BK0+i).padStart(7,'0'),qs=shuffle(S.bank.slice()).slice(0,N).map(x=>{const ix=shuffle([0,1,2,3]);return{q:x.q,o:ix.map(j=>x.o[j]),a:ix.indexOf(x.a)}}),key=qs.map(x=>L[x.a]).join('');
+K.books[book]=key;K.st[p.id]={fam:p.fam,ism:p.ism,ota:p.ota,gr:p.gr,book};buildTest(book,qs);s+=sheet({id:p.id,fam:p.fam,ism:p.ism,ota:p.ota},N,null,Ti);
+kr.push(`<tr><td>${p.id}</td><td>${esc((p.fam+' '+p.ism+' '+p.ota).trim())}</td><td>${esc(p.gr)}</td><td>${book}</td><td style="font-family:monospace;word-break:break-all">${key}</td></tr>`)});
+S.K=K;persist();$('S').innerHTML=s;{let h='';for(let i=0;i<kr.length;i+=30)h+=`<section class="pg kp"><h3>Javob kalitlari — ${esc(Ti)} (${Math.floor(i/30)+1}-bet)</h3><table><tr><th>ID</th><th>F.I.Sh</th><th>Guruh</th><th>Kitob</th><th>Kalit</th></tr>${kr.slice(i,i+30).join('')}</table></section>`;$('K').innerHTML=h}info();document.body.classList.add('show');$('sh').checked=true;
+msg(`${list.length} ta o'quvchi uchun test, titul va kalit tayyor (${$('T').children.length} sahifa test). PDF qilish tugmalaridan foydalaning.`)}
+function chkGen(){if(!$('T').children.length){msg('Avval "Generatsiya" tugmasini bosing.',1);return false}return true}
+function prSec(k){if(k!='R'&&!chkGen())return;document.body.dataset.p=k;setTimeout(()=>window.print(),50)}
+window.addEventListener('afterprint',()=>{delete document.body.dataset.p});
+function togShow(){document.body.classList.toggle('show',$('sh').checked)}
+function jpegPdf(jp){const enc=new TextEncoder(),parts=[],off=[];let len=0;const W=595.28,H=841.89,n=jp.length;
+const push=x=>{const u=typeof x=='string'?enc.encode(x):x;parts.push(u);len+=u.length},obj=(i,body)=>{off[i]=len;push(`${i} 0 obj\n`);push(body);push('\nendobj\n')};
+push('%PDF-1.4\n');obj(1,'<</Type/Catalog/Pages 2 0 R>>');obj(2,`<</Type/Pages/Count ${n}/Kids [${jp.map((_,i)=>(3+i*3)+' 0 R').join(' ')}]>>`);
+jp.forEach((j,i)=>{const p=3+i*3,c=`q ${W} 0 0 ${H} 0 0 cm /I Do Q`;
+obj(p,`<</Type/Page/Parent 2 0 R/MediaBox [0 0 ${W} ${H}]/Contents ${p+1} 0 R/Resources <</XObject <</I ${p+2} 0 R>>>>>>`);
+obj(p+1,`<</Length ${c.length}>>\nstream\n${c}\nendstream`);
+off[p+2]=len;push(`${p+2} 0 obj\n<</Type/XObject/Subtype/Image/Width ${j.w}/Height ${j.h}/ColorSpace/DeviceRGB/BitsPerComponent 8/Filter/DCTDecode/Length ${j.d.length}>>\nstream\n`);push(j.d);push('\nendstream\nendobj\n')});
+const xr=len,tot=3+n*3;push(`xref\n0 ${tot}\n0000000000 65535 f \n`+off.slice(1).map(o=>String(o).padStart(10,'0')+' 00000 n \n').join(''));push(`trailer\n<</Size ${tot}/Root 1 0 R>>\nstartxref\n${xr}\n%%EOF`);
+return new Blob(parts,{type:'application/pdf'})}
+async function pageJpeg(el,scale){const host=document.createElement('div');host.style.cssText='position:fixed;left:-12000px;top:0;width:210mm;background:#fff';const c=el.cloneNode(true);c.style.margin='0';c.style.border='0';host.appendChild(c);document.body.appendChild(host);
+try{const cv=await html2pdf().set({html2canvas:{scale:scale,backgroundColor:'#fff',logging:false,useCORS:true}}).from(c).toCanvas().get('canvas');
+const bl=await new Promise(r=>cv.toBlob(r,'image/jpeg',.97));return{d:new Uint8Array(await bl.arrayBuffer()),w:cv.width,h:cv.height}}finally{host.remove()}}
+async function savePdfs(){if(!chkGen())return;if(!window.html2pdf){msg("PDF kutubxonasi yuklanmadi (birinchi marta internet kerak). 🖨 tugmalaridan foydalaning.",1);return}
+let dir=null;if(window.showDirectoryPicker){try{dir=await showDirectoryPicker({mode:'readwrite'})}catch(e){return}}
+const jobs=[['testlar','T',30,3],['titullar','S',15,3.4],['kalitlar','K',60,2.5]];
+try{for(const[name,id,ch,sc]of jobs){const pages=[...$(id).children],parts=Math.ceil(pages.length/ch);
+for(let p=0;p<parts;p++){const jp=[],sl=pages.slice(p*ch,p*ch+ch);
+for(let i=0;i<sl.length;i++){msg(`PDF tayyorlanmoqda: ${name} (${p+1}/${parts}-fayl), ${i+1}/${sl.length} bet...`);await new Promise(r=>setTimeout(r,20));jp.push(await pageJpeg(sl[i],sc))}
+const blob=jpegPdf(jp),fn=name+(parts>1?'-'+(p+1):'')+'.pdf';
+if(dir){const fh=await dir.getFileHandle(fn,{create:true}),wr=await fh.createWritable();await wr.write(blob);await wr.close()}else{dl(blob,fn);await new Promise(r=>setTimeout(r,500))}}}
+msg(dir?"Hamma PDF fayllar tanlangan papkaga saqlandi.":"PDF fayllar yuklab olindi (Yuklashlar papkasida).")}catch(e){msg("Saqlashda xato: "+(e.message||e),1)}}
+// ================= 4. Tekshirish =================
+async function pdfImgs(file){const u=new Uint8Array(await file.arrayBuffer());let s='';for(let i=0;i<u.length;i+=32768)s+=String.fromCharCode.apply(null,u.subarray(i,i+32768));
+const out=[];let p=0;while((p=s.indexOf('/DCTDecode',p))>=0){const st=s.indexOf('stream',p);if(st<0)break;let a=st+6;if(s[a]=='\r')a++;if(s[a]=='\n')a++;const en=s.indexOf('endstream',a);if(en<0)break;p=en;
+const e=s.lastIndexOf('\xFF\xD9',en);if(e>a&&u[a]==0xFF&&u[a+1]==0xD8)out.push(new Blob([u.subarray(a,e+2)],{type:'image/jpeg'}))}
+return out}
+async function chk(){const K=S.K;if(!K){$('res').innerHTML='<div class="badc">Avval 3-bo\'limda "Generatsiya" qiling (yoki 💾 loyiha faylini oching): kalitlar shunda saqlanadi.</div>';return}
+const fs=[...$('f').files];if(!fs.length){$('res').textContent='Titul rasmlarini (JPG/PNG) yoki scanner PDF faylini tanlang.';return}
+const items=[];for(const f of fs){if(/\.pdf$/i.test(f.name)){const im=await pdfImgs(f);if(!im.length)items.push({name:f.name,err:"PDF ichidan rasm olib bo'lmadi. Scannerda 'JPG' yoki 'JPEG sifatli PDF' tanlang yoki JPG qilib saqlang."});im.forEach((b,i)=>items.push({name:f.name+' ('+(i+1)+'-bet)',blob:b}))}else items.push({name:f.name,blob:f})}
+let h="<table><tr><th>№</th><th>Fayl</th><th>ID</th><th>F.I.Sh</th><th>Guruh</th><th>Kitob</th><th>To'g'ri</th><th>Foiz</th><th>Bo'sh/ko'p</th></tr>";LAST=[];
+for(let i=0;i<items.length;i++){const it=items[i];$('res').textContent=`Tekshirilmoqda ${i+1}/${items.length}...`;await new Promise(r=>setTimeout(r));
+try{if(it.err)throw it.err;const B=bin(await loadImg(it.blob)),m=marks(B);if(!m)throw'burchak kvadratlari topilmadi';const hm=homog(MK,m),D='1234567890',dg=(n,pos)=>[...Array(n).keys()].map(c=>pk([1,2,3,4,5,6,7,8,9,0].map(d=>fv(B,hm,...pos(c,d))),D)).join('');
+const id=dg(4,ip),rb=dg(7,kp),s=K.st[id],bk=K.books[rb]?rb:(s?s.book:'');if(!bk)throw'ID va kitob raqami noaniq ('+id+' / '+rb+')';
+const key=K.books[bk],a=[...Array(K.n).keys()].map(q=>pk([0,1,2,3].map(k=>fv(B,hm,...ap(q,k))),L)),ok=a.filter((x,q)=>x==key[q]).length,bl=a.filter(x=>x=='-'||x=='*').length,nm=s?(s.fam+' '+s.ism+' '+s.ota).trim():"(ID topilmadi: "+id+")",pc=Math.round(1000*ok/K.n)/10;
+LAST.push([it.name,id,nm,s?s.gr:'',bk,ok,K.n,pc,bl]);h+=`<tr${s?'':' class="badr"'}><td>${LAST.length}</td><td>${esc(it.name)}</td><td>${id}</td><td>${esc(nm)}</td><td>${esc(s?s.gr:'')}</td><td>${bk}</td><td>${ok}/${K.n}</td><td>${pc}%</td><td>${bl}</td></tr>`}
+catch(e){h+=`<tr class="badr"><td>–</td><td>${esc(it.name)}</td><td colspan=7>XATO: ${esc(e.message||e)} — qo'lda tekshiring</td></tr>`}}
+$('res').innerHTML=h+'</table>'}
+function exRes(){if(!LAST.length){msg('Avval "Tekshirish" ni bosing.',1);return}xlsave([['№','Fayl','ID','F.I.Sh','Guruh','Kitob','Togri javoblar','Jami','Foiz','Bosh/kop belgi'],...LAST.map((r,i)=>[i+1,...r])],'natijalar.xlsx')}
+function prRes(){if(!LAST.length){msg('Avval "Tekshirish" ni bosing.',1);return}const t=S.K?S.K.title:'';$('RP').innerHTML=`<h3>Test natijalari — ${esc(t)}</h3><table><tr><th>№</th><th>ID</th><th>F.I.Sh</th><th>Guruh</th><th>Kitob</th><th>To'g'ri</th><th>Foiz</th></tr>`+[...LAST].sort((a,b)=>b[5]-a[5]).map((r,i)=>`<tr><td>${i+1}</td><td>${r[1]}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td><td>${r[4]}</td><td>${r[5]}/${r[6]}</td><td>${r[7]}%</td></tr>`).join('')+'</table>';prSec('R')}
+// ================= Loyiha fayli =================
+function saveProj(){persist();dl(new Blob([JSON.stringify({v:5,students:S.students,blocks:S.blocks,bank:S.bank,K:S.K,cfg:cfgGet()})],{type:'application/json'}),'test-loyiha.json');msg("Loyiha fayli yuklab olindi. Uni boshqa kompyuterda '📂' bilan ochishingiz mumkin.")}
+async function openProj(f){if(!f)return;try{const j=JSON.parse(await f.text());S.students=j.students||[];S.blocks=j.blocks||[];S.bank=j.bank||[];S.K=j.K||null;cfgSet(j.cfg);rSt();rBl();info();persist();msg("Loyiha ochildi.")}catch(e){msg("Loyiha faylini ochib bo'lmadi.",1)}$('pj').value=''}
+function init(){try{const j=JSON.parse(localStorage.getItem('tg5')||'null');if(j){S.students=j.students||[];S.blocks=j.blocks||[];S.bank=j.bank||[];S.K=j.K||null;cfgSet(j.cfg)}}catch(e){}
+$('bg').onchange=async()=>{const f=$('bg').files[0],rs=document.documentElement.style;if(!f){rs.removeProperty('--bgurl');return}const im=await createImageBitmap(f),k=Math.min(1,1100/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);rs.setProperty('--bgurl',`url(${c.toDataURL('image/jpeg',.8)})`)};
+['n','t','b','ff','fs','bo','d'].forEach(i=>$(i).addEventListener('change',persist));rSt();rBl();info()}
+init();
+</script></body></html>
